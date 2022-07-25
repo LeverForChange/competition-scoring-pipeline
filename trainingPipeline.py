@@ -1,11 +1,3 @@
-"""
-TODO:
-- Make everything two space tabs
-- Anonymous Judge field switches to Judge Email for BAWOP
-- Competition Domain: App ID are embedded in title
-- BAWOP proposals have nulls for Competition Domain
-"""
-
 import argparse
 
 import commentExtractor
