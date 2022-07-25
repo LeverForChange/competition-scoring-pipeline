@@ -30,21 +30,21 @@ You'll need to download data from GlobalView to train the model on, see below fo
 The following columns are required for downloaded CSV from Global View for building new intelligent scoring models:
 
 ```
-Application #
-Competition
-Project Title
-Organization Name
-Panel DURABLE Judge Data
-Panel EVIDENCE-BASED Judge Data
-Panel FEASIBLE Judge Data
-Panel IMPACTFUL Judge Data
-Panel COMMUNITY-INFORMED Judge Data
-Panel COMMUNITY CENTERED Judge Data
-Panel SUSTAINABLE Judge Data
-Panel SCALABLE Judge Data
-Panel EQUITABLE Judge Data
-Panel ACTIONABLE Judge Data
-Panel BOLD Judge Data
-Panel INNOVATIVE Judge Data
-Panel TRANSFORMATIVE Judge Data
+"Application #",
+"Competition",
+"Project Title",
+"Organization Name",
+"Panel DURABLE Judge Data",
+"Panel SUSTAINABLE Judge Data",
+"Panel EVIDENCE-BASED Judge Data",
+"Panel FEASIBLE Judge Data",
+"Panel IMPACTFUL Judge Data",
+"Panel COMMUNITY-INFORMED Judge Data",
+"Panem COMMUNITY CENTERED Judge Data",
+"Panel SCALABLE Judge Data",
+"Panel EQUITABLE Judge Data",
+"Panel ACTIONABLE Judge Data",
+"Panel BOLD Judge Data",
+"Panel INNOVATIVE Judge Data",
+"Panel TRANSFORMATIVE Judge Data"
 ```
