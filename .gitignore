@@ -1,0 +1,6 @@
+*.joblib
+*.csv
+*.xlsx
+*.png
+__pycache__/
+venv/
