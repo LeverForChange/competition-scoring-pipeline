@@ -39,7 +39,8 @@ def run(inputFile, outputPrefix):
       # Get other proposal data
       prop = proposals.iloc[i]
       appIds = [
-          f"{prop['Competition Domain']}_{prop['Application #']}"] * len(comments)
+          f"{prop['Competition Domain']}_{prop['Application #']}"
+          ] * len(comments)
 
       # Add new rows to our Data Frame
       df.extend(list(zip(
