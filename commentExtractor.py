@@ -25,7 +25,7 @@ def run(inputFile, outputPrefix):
       row = row.get('Comments')
       comments = [r['Comment'] for r in row]
       scores = [r['Score']['Raw'] for r in row]
-      judges = [r.get('Anonymous Judge Name', r.get('Judge Email')) for r in row]
+      judges = [r.get('Anonymous Judge Name') for r in row]
       judges = list(map(lambda x: x.split(' ')[-1], judges))
 
       # Criteria word
