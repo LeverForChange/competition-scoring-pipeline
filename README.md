@@ -40,7 +40,7 @@ The following columns are required for downloaded CSV from Global View for build
 "Panel FEASIBLE Judge Data",
 "Panel IMPACTFUL Judge Data",
 "Panel COMMUNITY-INFORMED Judge Data",
-"Panem COMMUNITY CENTERED Judge Data",
+"Panel COMMUNITY CENTERED Judge Data",
 "Panel SCALABLE Judge Data",
 "Panel EQUITABLE Judge Data",
 "Panel ACTIONABLE Judge Data",
