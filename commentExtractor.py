@@ -22,11 +22,17 @@ def run(inputFile, outputPrefix):
         continue
 
       # Extract comments/scores/judge ID
-      row = row.get('Comments')
-      comments = [r['Comment'] for r in row]
-      scores = [r['Score']['Raw'] for r in row]
-      judges = [r.get('Anonymous Judge Name') for r in row]
-      judges = list(map(lambda x: x.split(' ')[-1], judges))
+      comments = []
+      scores = []
+      judges = []
+      for r in row.get('Comments'):
+        if (not r.get('Comment') or 
+            not r.get('Score', {}).get('Raw') or 
+            not r.get('Anonymous Judge Name')):
+          continue
+        comments.append(r['Comment'])
+        scores.append(r['Score']['Raw'])
+        judges.append(r['Anonymous Judge Name'].split(' ')[-1])
 
       # Criteria word
       criteria = col.split(' ')[1]
