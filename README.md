@@ -1,7 +1,7 @@
 # General Instructions
 
 1. Run `pip install -r requirements.txt`. If you expect dependency conflicts to arise, it may be wise to activate a Python virtual environment first.
-2. he NLP tasks require some external datasets to be downloaded on the local machine. 
+2. The NLP tasks require some external datasets to be downloaded on the local machine. 
   - Run the following command in your terminal: `python -m textblob.download_corpora`. If you encounter issues, consult: https://stackoverflow.com/questions/41310885/error-downloading-textblob-certificate-verify-failed
   - Then, open a python instance and run: `import nltk`, then `nltk.download('stopwords')`, then `nltk.download('omw-1.4')`. If you have problems, consult here: https://stackoverflow.com/questions/38916452/nltk-download-ssl-certificate-verify-failed
   - If more problems persist, you may need to download nltk corpora "al la carte". Follow the python shell commands outputted in red by nltk.
@@ -34,7 +34,7 @@ The following columns are required for downloaded CSV from Global View for build
 
 ```
 "Application #",
-"Competition",
+"Competition Name",
 "Project Title",
 "Organization Name",
 "Panel DURABLE Judge Data",
