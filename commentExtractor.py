@@ -9,7 +9,7 @@ def run(inputFile, outputPrefix):
   # Read in CSV data and select criteria columns
   proposals = pd.read_csv(f'data/{inputFile}')
   raw = proposals.filter(regex='Panel\s[A-Z\-]+\sJudge\sData')
-  competitions = proposals['Competition Domain']
+  competitions = proposals['Competition Name']
 
   # For each comment in the criteria data, add a row to new dataframe
   for col, series in raw.iteritems():
@@ -39,7 +39,7 @@ def run(inputFile, outputPrefix):
       # Get other proposal data
       prop = proposals.iloc[i]
       appIds = [
-          f"{prop['Competition Domain']}_{prop['Application #']}"
+          f"{prop['Competition Name']}_{prop['Application #']}"
           ] * len(comments)
 
       # Add new rows to our Data Frame
