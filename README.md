@@ -8,13 +8,15 @@
 
 # Competition Scoring Pipeline
 
-Example command: `python scoring_pipeline.py submittable_download.csv BAWOP LFC_model.joblib`
+Example command: `python scoringPipeline.py submittable_download.csv BAWOP LFC_model.joblib`
 
 The scoring pipeline will apply the trained model to predict judge scores for a given set of scoring data. The pipeline is geared to clean data coming from the BAWOP challenge using Submittable as the vendor. You'd need to eliminate/refactor this step for data downloaded from Torque or another vendor. 
 
 The first argument is simply the name of the downloaded data file. Make sure it's in a `data/` subdirectory from the root of this project. 
 
 The second argument is simply a parameter used to prefix outputted data files. The final dataset with ranked and normalized scores for each proposal will be named `PREFIX_RANKED.csv`. The other output files may be useful for exploratory analyses.
+
+The third argument is the name of the model file to run score the input proposals with.
 
 ### Note on downloading Submittable data
 
