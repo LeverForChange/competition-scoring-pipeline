@@ -1,62 +1,36 @@
 import pandas as pd
 import json
 import sys
+import config
+import re
 
-
-def run(inputFile, outputPrefix):
+def run(torque):
   df = []
 
-  # Read in CSV data and select criteria columns
-  proposals = pd.read_csv(f'data/{inputFile}')
-  raw = proposals.filter(regex='Panel\s[A-Z\-]+\sJudge\sData')
-  competitions = proposals['Competition Name']
-
   # For each comment in the criteria data, add a row to new dataframe
-  for col, series in raw.iteritems():
-    for i, row in enumerate(series):
-      try:
-        row = json.loads(row)
-      except:
-        continue
-      if not row:
-        continue
+  for competition in torque.competitions:
+      for proposal in competition.proposals:
+        appId = f"{proposal['Competition Name']}_{proposal['Application #']}"
 
-      # Extract comments/scores/judge ID
-      comments = []
-      scores = []
-      judges = []
-      for r in row.get('Comments'):
-        if (not r.get('Comment') or 
-            not r.get('Score', {}).get('Raw') or 
-            not r.get('Anonymous Judge Name')):
-          continue
-        comments.append(r['Comment'])
-        scores.append(r['Score']['Raw'])
-        judges.append(r['Anonymous Judge Name'].split(' ')[-1])
+        for key in proposal.keys():
+          if re.match('Panel\s[A-Z\-]+\sJudge\sData', key):
+            if not proposal[key]:
+              continue
 
-      # Criteria word
-      criteria = col.split(' ')[1]
-      criteria = [criteria] * len(comments)
+            for comment in proposal[key].get("Comments", []):
+              if (not comment.get('Comment') or 
+                  not comment.get('Score', {}).get('Raw') or 
+                  not comment.get('Anonymous Judge Name')):
+                continue
 
-      # Select competition
-      comp = competitions.iloc[i]
-      competition = [comp] * len(comments)
-
-      # Get other proposal data
-      prop = proposals.iloc[i]
-      appIds = [
-          f"{prop['Competition Name']}_{prop['Application #']}"
-          ] * len(comments)
-
-      # Add new rows to our Data Frame
-      df.extend(list(zip(
-          appIds,
-          comments,
-          criteria,
-          scores,
-          competition,
-          judges
-      )))
+              df.append([
+                appId,
+                comment["Comment"],
+                key.split(' ')[1],
+                float(comment["Score"]["Raw"]),
+                proposal["Competition Name"],
+                comment["Anonymous Judge Name"].split(' ')[-1],
+              ])
 
   df = pd.DataFrame(
     df,
@@ -70,7 +44,7 @@ def run(inputFile, outputPrefix):
     ]
   )
   df.dropna(subset=['Comment', 'Raw Score', 'Judge'], inplace=True)
-  df.to_csv(f'data/{outputPrefix}_Comments.csv', index=False)
+  return df
 
 if __name__ == '__main__':
   run(*sys.argv[1:])
