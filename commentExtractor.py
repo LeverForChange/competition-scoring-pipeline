@@ -1,7 +1,6 @@
 import pandas as pd
 import json
 import sys
-import config
 import re
 
 def run(torque):

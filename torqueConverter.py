@@ -12,16 +12,15 @@ Review 1: What is your overall impression of this submission? Please use this sp
 import pandas as pd
 import numpy as np
 import sys
-import config
 
-def run(torque):
+def run(torque, competition, score_type, judge_data_types):
   reviewers = range(1, 6)
   df = []
 
-  for proposal in torque.competitions[config.SCORING_TORQUE_COMPETITION].proposals:
-    for judge_data_type in config.SCORING_JUDGE_DATA_TYPES:
-      if proposal["%s %s Judge Data" % (config.SCORING_SCORE_TYPE, judge_data_type)]:
-        for torque_judge_datum in proposal["%s %s Judge Data" % (config.SCORING_SCORE_TYPE, judge_data_type)]["Comments"]:
+  for proposal in torque.competitions[competition].proposals:
+    for judge_data_type in judge_data_types:
+      if proposal["%s %s Judge Data" % (score_type, judge_data_type)]:
+        for torque_judge_datum in proposal["%s %s Judge Data" % (score_type, judge_data_type)]["Comments"]:
           if (not torque_judge_datum.get('Comment') or 
               not torque_judge_datum.get('Score', {}).get('Raw') or 
               not torque_judge_datum.get('Anonymous Judge Name')):
