@@ -1,6 +1,6 @@
 # General Instructions
 
-1. Run `pip install -r requirements.txt`. If you expect dependency conflicts to arise, it may be wise to activate a Python virtual environment first.
+1. Run `pip3 install -e .`. If you expect dependency conflicts to arise, it may be wise to activate a Python virtual environment first.
 2. The NLP tasks require some external datasets to be downloaded on the local machine. 
   - Run the following command in your terminal: `python -m textblob.download_corpora`. If you encounter issues, consult: https://stackoverflow.com/questions/41310885/error-downloading-textblob-certificate-verify-failed
   - Then, open a python instance and run: `import nltk`, then `nltk.download('stopwords')`, then `nltk.download('omw-1.4')`. If you have problems, consult here: https://stackoverflow.com/questions/38916452/nltk-download-ssl-certificate-verify-failed
@@ -25,3 +25,7 @@ The first argument is the name of the model file to run score the input proposal
 Example command: `python trainingPipeline.py /path/to/model.joblib`
 
 You may want to re-train the model for a number of reasons - adding new fields, changing parameters, tweaking the NLP approach, or simply because new proposals/cleaned/refactored data have been entered into Torque. This pipeline will build the pipeline needed for predicting intelligent scores for LFC competitions.
+
+# Using from other python code
+
+Look at `./trainingPipeline.py` and `./scoringPipeline.py` to see how they build up a torque instance and call into the module.
