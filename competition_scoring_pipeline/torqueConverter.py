@@ -39,6 +39,3 @@ def run(torque, competition, score_type, judge_data_types):
           df.append(eval)
 
   return pd.DataFrame.from_records(df)
-
-if __name__ == '__main__':
-  run(*sys.argv[1:])

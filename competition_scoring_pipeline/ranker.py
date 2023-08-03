@@ -15,7 +15,7 @@ def run(df):
   lowestDropped = lowestDropped.to_frame().reset_index().rename(columns={'Raw Score': 'Lowest Dropped Score'})
 
   namesGrouped = df.groupby('ID', as_index=False).agg({'ID': 'first'})
-  df = pd.merge(namesGrouped, df.groupby('ID').mean(), on='ID')
+  df = pd.merge(namesGrouped, df.drop(labels="Judge", axis=1).groupby('ID').mean(), on='ID')
   df = pd.merge(df, lowestDropped, on='ID')
 
   df['Raw Rank'] = df.rank(method='min', ascending=False)['Raw Score'].astype(int)
@@ -23,6 +23,3 @@ def run(df):
   df['Intelligent Adjusted Rank'] = df.rank(method='min', ascending=False)['Intelligent Adjusted Score'].astype(int)
   df['Lowest Dropped Rank'] = df.rank(method='min', ascending=False)['Lowest Dropped Score'].astype(int)
   return df
-
-if __name__ == '__main__':
-  run(*sys.argv[1:])

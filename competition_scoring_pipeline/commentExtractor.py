@@ -44,6 +44,3 @@ def run(torque):
   )
   df.dropna(subset=['Comment', 'Raw Score', 'Judge'], inplace=True)
   return df
-
-if __name__ == '__main__':
-  run(*sys.argv[1:])

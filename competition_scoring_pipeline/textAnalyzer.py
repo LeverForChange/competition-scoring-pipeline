@@ -47,6 +47,3 @@ def run(df):
 
   df.dropna(inplace=True)
   return df
-
-if __name__ == '__main__':
-  run(*sys.argv[1:])

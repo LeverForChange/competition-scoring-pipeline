@@ -42,6 +42,3 @@ def run(model, df):
   df['AI Predicted Score'] = predictions
   df['Intelligent Adjusted Score'] = (df['Raw Score'] + df['AI Predicted Score']) / 2
   return df
-
-if __name__ == '__main__':
-  run(*sys.argv[1:])

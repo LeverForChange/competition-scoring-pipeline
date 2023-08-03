@@ -53,6 +53,3 @@ def run(df):
     verbose=True
     )
   return pipeline.fit(X, Y)
-
-if __name__ == '__main__':
-  run(*sys.argv[1:])

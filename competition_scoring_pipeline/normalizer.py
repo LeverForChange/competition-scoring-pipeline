@@ -29,6 +29,3 @@ def run(df):
   plt.show()
 
   return df
-
-if __name__ == '__main__':
-  run(*sys.argv)
