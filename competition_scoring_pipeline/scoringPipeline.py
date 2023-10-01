@@ -26,18 +26,19 @@ def run(torque, modelName, competition, score_type, judge_data_types, column_map
 
   print('Saving data back to torque')
   for record in ranked_dataframe.to_dict(orient='records'):
-      current_rank = torque.competitions[competition].proposals[record["ID"]]["%s Rank" % score_type]
-      current_score = torque.competitions[competition].proposals[record["ID"]]["%s Score" % score_type]
+    current_rank = torque.competitions[competition].proposals[record["ID"]]["%s Rank" % score_type]
+    current_score = torque.competitions[competition].proposals[record["ID"]]["%s Score" % score_type]
 
-      current_rank["LFC Intelligent Adjusted"] = record["Intelligent Adjusted Rank"]
-      current_score["LFC Intelligent Adjusted"] = round(record["Intelligent Adjusted Score"] * 20, 1)
-      current_rank["LFC Normalized"] = record["Normalized Rank"]
-      current_score["LFC Normalized"] = round(record["Normalized Score"] * 20, 1)
-      current_rank["LFC Lowest Dropped"] = record["Lowest Dropped Rank"]
-      current_score["LFC Lowest Dropped"] = round(record["Lowest Dropped Score"] * 20, 1)
+    current_rank["LFC Intelligent Adjusted"] = record["Intelligent Adjusted Rank"]
+    current_score["LFC Intelligent Adjusted"] = round(record["Intelligent Adjusted Score"] * 20, 1)
+    current_rank["LFC Normalized"] = record["Normalized Rank"]
+    current_score["LFC Normalized"] = round(record["Normalized Score"] * 20, 1)
+    current_rank["LFC Lowest Dropped"] = record["Lowest Dropped Rank"]
+    current_score["LFC Lowest Dropped"] = round(record["Lowest Dropped Score"] * 20, 1)
 
-      torque.competitions[competition].proposals[record["ID"]]["%s Rank" % score_type] = current_rank
-      torque.competitions[competition].proposals[record["ID"]]["%s Score" % score_type] = current_score
+    torque.competitions[competition].proposals[record["ID"]]["%s Rank" % score_type] = current_rank
+    torque.competitions[competition].proposals[record["ID"]]["%s Score" % score_type] = current_score
+
 def run_in_memory(proposals, modelName, score_type, judge_data_types, column_mapping={}):
   comment_df = torqueConverter.run(proposals, score_type, judge_data_types, column_mapping=column_mapping)
   analyzed_dataframe = textAnalyzer.run(comment_df)
