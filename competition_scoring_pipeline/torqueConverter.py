@@ -13,29 +13,30 @@ import pandas as pd
 import numpy as np
 import sys
 
-def run(torque, competition, score_type, judge_data_types):
+def run(proposals, score_type, judge_data_types, column_mapping={}):
   reviewers = range(1, 6)
   df = []
 
-  for proposal in torque.competitions[competition].proposals:
+  for proposal in proposals:
     for judge_data_type in judge_data_types:
       if proposal["%s %s Judge Data" % (score_type, judge_data_type)]:
-        for torque_judge_datum in proposal["%s %s Judge Data" % (score_type, judge_data_type)]["Comments"]:
-          if (not torque_judge_datum.get('Comment') or 
-              not torque_judge_datum.get('Score', {}).get('Raw') or 
-              not torque_judge_datum.get('Anonymous Judge Name')):
-            continue
-
-          judge = torque_judge_datum["Anonymous Judge Name"]
-          score = torque_judge_datum["Score"]["Raw"]
-          comment = torque_judge_datum["Comment"]
-          eval = {
-            'ID': proposal["Application #"],
-            'Comment': comment,
-            'Criteria': judge_data_type,
-            'Raw Score': float(score),
-            'Judge': judge
-          }
-          df.append(eval)
+        if len(proposal["%s %s Judge Data" % (score_type, judge_data_type)]["Comments"]) > 1:
+          for torque_judge_datum in proposal["%s %s Judge Data" % (score_type, judge_data_type)]["Comments"]:
+            if (not torque_judge_datum.get('Comment') or 
+                not torque_judge_datum.get('Score', {}).get('Raw') or 
+                not torque_judge_datum.get('Anonymous Judge Name')):
+              continue
+  
+            judge = torque_judge_datum["Anonymous Judge Name"]
+            score = torque_judge_datum["Score"]["Raw"]
+            comment = torque_judge_datum["Comment"]
+            eval = {
+              'ID': proposal["Application #"],
+              'Comment': comment,
+              'Criteria': column_mapping.get(judge_data_type, judge_data_type),
+              'Raw Score': float(score),
+              'Judge': judge
+            }
+            df.append(eval)
 
   return pd.DataFrame.from_records(df)
