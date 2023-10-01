@@ -8,11 +8,13 @@ def run(torque):
 
   # For each comment in the criteria data, add a row to new dataframe
   for competition in torque.competitions:
+      torque.bulk_fetch(competition.proposals)
       for proposal in competition.proposals:
         appId = f"{proposal['Competition Name']}_{proposal['Application #']}"
 
         for key in proposal.keys():
-          if re.match('Panel\s[A-Z\-]+\sJudge\sData', key):
+          match = re.match('Peer\s([A-Z\-\s]+)\sJudge\sData', key)
+          if match:
             if not proposal[key]:
               continue
 
@@ -25,7 +27,7 @@ def run(torque):
               df.append([
                 appId,
                 comment["Comment"],
-                key.split(' ')[1],
+                match.groups()[0],
                 float(comment["Score"]["Raw"]),
                 proposal["Competition Name"],
                 comment["Anonymous Judge Name"].split(' ')[-1],
