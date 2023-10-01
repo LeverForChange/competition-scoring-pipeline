@@ -3,9 +3,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import sys
 
-def run(outputPrefix):
-  df = pd.read_csv(f'data/{outputPrefix}_Results.csv')
-  
+def run(df):
   df['Temp_ID'] = df['ID'] + df['Criteria']
 
   mu = df['Raw Score'].mean()
@@ -30,7 +28,4 @@ def run(outputPrefix):
   sns.distplot(df['Raw Score'])
   plt.show()
 
-  df.to_csv(f'data/{outputPrefix}_Results.csv', index=False)
-
-if __name__ == '__main__':
-  run(*sys.argv)
+  return df
