@@ -10,7 +10,10 @@ from sklearn.metrics import mean_squared_error, r2_score, explained_variance_sco
 import warnings
 warnings.filterwarnings("ignore")
 
-def run(model, df):
+def run(outputPrefix, modelName):
+  model = load(f'data/{modelName}')
+  df = pd.read_csv(f'data/{outputPrefix}_Comments.csv')
+
   X = df.drop(columns=['Raw Score'])
   Y = df['Raw Score']
 
@@ -41,4 +44,7 @@ def run(model, df):
   # Save predicted csv
   df['AI Predicted Score'] = predictions
   df['Intelligent Adjusted Score'] = (df['Raw Score'] + df['AI Predicted Score']) / 2
-  return df
+  df.to_csv(f'data/{outputPrefix}_Results.csv', index=False)
+
+if __name__ == '__main__':
+  run(*sys.argv[1:])

@@ -19,9 +19,10 @@ def avg_word(sentence):
   words = sentence.split()
   return (sum(len(word) for word in words)/len(words))
 
-def run(df):
+def run(outputPrefix):
   stop = stopwords.words('english')
   sid = SentimentIntensityAnalyzer()
+  df = pd.read_csv(f'data/{outputPrefix}_Comments.csv')
 
   df['Text'] = cleanText(df.Comment)
   df['Comment'] = df['Comment'].astype(str)
@@ -46,4 +47,7 @@ def run(df):
   df['Complexity'] = df.Comment.apply(lambda x: textstat.flesch_reading_ease(x))
 
   df.dropna(inplace=True)
-  return df
+  df.to_csv(f'data/{outputPrefix}_Comments.csv', index=False)
+
+if __name__ == '__main__':
+  run(*sys.argv[1:])

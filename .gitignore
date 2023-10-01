@@ -4,8 +4,3 @@
 *.png
 __pycache__/
 venv/
-config.py
-Pipfile*
-*.egg-info
-*.toml
-build

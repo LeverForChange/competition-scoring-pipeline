@@ -1,5 +1,6 @@
 import sys
 import pandas as pd
+from joblib import dump
 
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.impute import SimpleImputer
@@ -8,7 +9,9 @@ from sklearn.pipeline import Pipeline
 from sklearn import linear_model
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-def run(df):
+def run(outputPrefix):
+  df = pd.read_csv(f'data/{outputPrefix}_Comments.csv')
+
   # Select train x, y data + split
   X = df.drop(columns=['Raw Score'])
   Y = df['Raw Score']
@@ -52,4 +55,9 @@ def run(df):
     ],
     verbose=True
     )
-  return pipeline.fit(X, Y)
+  model = pipeline.fit(X, Y)
+
+  dump(model, f'data/{outputPrefix}_model.joblib')
+
+if __name__ == '__main__':
+  run(*sys.argv[1:])
