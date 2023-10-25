@@ -60,5 +60,20 @@ def run_in_memory(proposals, modelName, score_type, judge_data_types, column_map
         "LFC Normalized": round(record["Normalized Score"] * 20, 1),
         "LFC Lowest Dropped": round(record["Lowest Dropped Score"] * 20, 1),
       },
+      "Judge Scores": {}
     }
+
+  for record in normalized_dataframe.to_dict(orient='records'):
+    inverted_column_mapping = {c[1]: c[0] for c in column_mapping.items()}
+    criteria = record["Criteria"]
+    criteria = inverted_column_mapping.get(criteria, criteria)
+    judge = record["Judge"]
+    if criteria not in resp[record["ID"]]["Judge Scores"]:
+      resp[record["ID"]]["Judge Scores"][criteria] = {}
+
+    resp[record["ID"]]["Judge Scores"][criteria][judge] = {
+      "LFC Intelligent Adjusted": round(record["Intelligent Adjusted Score"], 1),
+      "LFC Normalized": round(record["Normalized Score"], 1),
+    }
+
   return resp
