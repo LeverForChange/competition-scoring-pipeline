@@ -10,5 +10,5 @@ setup(
     author_email="intentionally@left.blank.com",
     url="https://github.com/LeverForChange/competition-scoring-pipeline",
     packages=["competition_scoring_pipeline"],
-    install_requires=["pandas", "numpy", "scikit-learn==1.0.2", "matplotlib", "seaborn", "joblib", "textstat", "nltk", "textblob", "torqueclient"]
+    install_requires=["pandas", "numpy", "scikit-learn", "matplotlib", "seaborn", "joblib", "textstat", "nltk", "textblob", "torqueclient"]
 )
