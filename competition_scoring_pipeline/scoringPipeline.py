@@ -42,26 +42,31 @@ def run(torque, modelName, competition, score_type, judge_data_types, column_map
 def run_in_memory(proposals, modelName, score_type, judge_data_types, column_mapping={}):
   comment_df = torqueConverter.run(proposals, score_type, judge_data_types, column_mapping=column_mapping)
   analyzed_dataframe = textAnalyzer.run(comment_df)
-  model = load(modelName)
-  predicted_dataframe = predictor.run(model, analyzed_dataframe)
+  if modelName:
+      model = load(modelName)
+      predicted_dataframe = predictor.run(model, analyzed_dataframe)
+  else:
+      predicted_dataframe = analyzed_dataframe
   normalized_dataframe = normalizer.run(predicted_dataframe)
-  ranked_dataframe = ranker.run(normalized_dataframe)
+  ranked_dataframe = ranker.run(normalized_dataframe, modelName)
 
   resp = {}
   for record in ranked_dataframe.to_dict(orient='records'):
     resp[record["ID"]] = {
       "%s Rank" % score_type: {
-        "LFC Intelligent Adjusted": record["Intelligent Adjusted Rank"],
         "LFC Normalized": record["Normalized Rank"],
         "LFC Lowest Dropped": record["Lowest Dropped Rank"],
       },
       "%s Score" % score_type: {
-        "LFC Intelligent Adjusted": round(record["Intelligent Adjusted Score"] * 20, 1),
         "LFC Normalized": round(record["Normalized Score"] * 20, 1),
         "LFC Lowest Dropped": round(record["Lowest Dropped Score"] * 20, 1),
       },
       "Judge Scores": {}
     }
+
+    if modelName:
+      resp[record["ID"]]["%s Rank" % score_type]["LFC Intelligent Adjusted"] = record["Intelligent Adjusted Rank"]
+      resp[record["ID"]]["%s Score" % score_type]["LFC Intelligent Adjusted"] = round(record["Intelligent Adjusted Score"] * 20, 1)
 
   for record in normalized_dataframe.to_dict(orient='records'):
     inverted_column_mapping = {c[1]: c[0] for c in column_mapping.items()}
@@ -72,8 +77,9 @@ def run_in_memory(proposals, modelName, score_type, judge_data_types, column_map
       resp[record["ID"]]["Judge Scores"][criteria] = {}
 
     resp[record["ID"]]["Judge Scores"][criteria][judge] = {
-      "LFC Intelligent Adjusted": round(record["Intelligent Adjusted Score"], 1),
       "LFC Normalized": round(record["Normalized Score"], 1),
     }
+    if modelName:
+      resp[record["ID"]]["Judge Scores"][criteria][judge]["LFC Intelligent Adjusted"] = round(record["Intelligent Adjusted Score"], 1)
 
   return resp
