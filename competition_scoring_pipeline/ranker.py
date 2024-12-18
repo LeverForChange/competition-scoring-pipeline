@@ -9,7 +9,14 @@ def run(df, include_intelligent):
     'Normalized Score'
   ]
   if include_intelligent:
-    frame_info = frame_info.append(['AI Predicted Score', 'Intelligent Adjusted Score'])
+    frame_info = [
+      'ID', 
+      'Judge', 
+      'Raw Score', 
+      'AI Predicted Score',
+      'Intelligent Adjusted Score',
+      'Normalized Score'
+    ]
 
   df = df[frame_info]
   grouped = df.groupby(['ID', 'Judge']).mean().groupby('ID')
