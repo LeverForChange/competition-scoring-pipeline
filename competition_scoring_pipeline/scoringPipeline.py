@@ -30,11 +30,11 @@ def run(torque, modelName, competition, score_type, judge_data_types, column_map
     current_score = torque.competitions[competition].proposals[record["ID"]]["%s Score" % score_type]
 
     current_rank["LFC Intelligent Adjusted"] = record["Intelligent Adjusted Rank"]
-    current_score["LFC Intelligent Adjusted"] = round(record["Intelligent Adjusted Score"] * 20, 1)
+    current_score["LFC Intelligent Adjusted"] = round(record["Intelligent Adjusted Score"] * 5 * len(judge_data_types), 1)
     current_rank["LFC Normalized"] = record["Normalized Rank"]
-    current_score["LFC Normalized"] = round(record["Normalized Score"] * 20, 1)
+    current_score["LFC Normalized"] = round(record["Normalized Score"] * 5 * len(judge_data_types), 1)
     current_rank["LFC Lowest Dropped"] = record["Lowest Dropped Rank"]
-    current_score["LFC Lowest Dropped"] = round(record["Lowest Dropped Score"] * 20, 1)
+    current_score["LFC Lowest Dropped"] = round(record["Lowest Dropped Score"] * 5 * len(judge_data_types), 1)
 
     torque.competitions[competition].proposals[record["ID"]]["%s Rank" % score_type] = current_rank
     torque.competitions[competition].proposals[record["ID"]]["%s Score" % score_type] = current_score
@@ -58,15 +58,15 @@ def run_in_memory(proposals, modelName, score_type, judge_data_types, column_map
         "LFC Lowest Dropped": record["Lowest Dropped Rank"],
       },
       "%s Score" % score_type: {
-        "LFC Normalized": round(record["Normalized Score"] * 20, 1),
-        "LFC Lowest Dropped": round(record["Lowest Dropped Score"] * 20, 1),
+        "LFC Normalized": round(record["Normalized Score"] * 5 * len(judge_data_types), 1),
+        "LFC Lowest Dropped": round(record["Lowest Dropped Score"] * 5 * len(judge_data_types), 1),
       },
       "Judge Scores": {}
     }
 
     if modelName:
       resp[record["ID"]]["%s Rank" % score_type]["LFC Intelligent Adjusted"] = record["Intelligent Adjusted Rank"]
-      resp[record["ID"]]["%s Score" % score_type]["LFC Intelligent Adjusted"] = round(record["Intelligent Adjusted Score"] * 20, 1)
+      resp[record["ID"]]["%s Score" % score_type]["LFC Intelligent Adjusted"] = round(record["Intelligent Adjusted Score"] * 5 * len(judge_data_types), 1)
 
   for record in normalized_dataframe.to_dict(orient='records'):
     inverted_column_mapping = {c[1]: c[0] for c in column_mapping.items()}
