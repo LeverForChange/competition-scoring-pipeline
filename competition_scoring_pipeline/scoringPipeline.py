@@ -52,6 +52,17 @@ def run_in_memory(proposals, modelName, score_type, judge_data_types, column_map
 
   resp = {}
   for record in ranked_dataframe.to_dict(orient='records'):
+    judge_scores = {}
+
+    for judge_row in normalized_dataframe[normalized_dataframe["ID"] == record["ID"]].to_dict(orient='records'):
+        if judge_row["Criteria"] not in judge_scores:
+            judge_scores[judge_row["Criteria"]] = {}
+
+        if judge_row["Judge"] not in judge_scores[judge_row["Criteria"]]:
+            judge_scores[judge_row["Criteria"]][judge_row["Judge"]] = {}
+
+        judge_scores[judge_row["Criteria"]][judge_row["Judge"]]["LFC Normalized"] = judge_row["Normalized Score"]
+
     resp[record["ID"]] = {
       "%s Rank" % score_type: {
         "LFC Normalized": record["Normalized Rank"],
@@ -61,7 +72,7 @@ def run_in_memory(proposals, modelName, score_type, judge_data_types, column_map
         "LFC Normalized": round(record["Normalized Score"] * 5 * len(judge_data_types), 1),
         "LFC Lowest Dropped": round(record["Lowest Dropped Score"] * 5 * len(judge_data_types), 1),
       },
-      "Judge Scores": {}
+      "Judge Scores": judge_scores
     }
 
     if modelName:
