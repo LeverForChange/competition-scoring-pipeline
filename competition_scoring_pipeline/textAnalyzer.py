@@ -17,7 +17,10 @@ def cleanText(series):
 
 def avg_word(sentence):
   words = sentence.split()
-  return (sum(len(word) for word in words)/len(words))
+  if len(words):
+      return (sum(len(word) for word in words)/len(words))
+  else:
+      return 0
 
 def run(df):
   stop = stopwords.words('english')
