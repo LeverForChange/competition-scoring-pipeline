@@ -18,25 +18,25 @@ def run(proposals, score_type, judge_data_types, column_mapping={}):
   df = []
 
   for proposal in proposals:
-    for judge_data_type in judge_data_types:
-      if proposal["%s %s Judge Data" % (score_type, judge_data_type)]:
-        if len(proposal["%s %s Judge Data" % (score_type, judge_data_type)]["Comments"]) > 1:
-          for torque_judge_datum in proposal["%s %s Judge Data" % (score_type, judge_data_type)]["Comments"]:
-            if (not torque_judge_datum.get('Comment') or 
-                not torque_judge_datum.get('Score', {}).get('Raw') or 
-                not torque_judge_datum.get('Anonymous Judge Name')):
-              continue
-  
-            judge = torque_judge_datum["Anonymous Judge Name"]
-            score = torque_judge_datum["Score"]["Raw"]
-            comment = torque_judge_datum["Comment"]
-            eval = {
-              'ID': proposal["Application #"],
-              'Comment': comment,
-              'Criteria': column_mapping.get(judge_data_type, judge_data_type),
-              'Raw Score': float(score),
-              'Judge': judge
-            }
-            df.append(eval)
+    for trait_judge_data in proposal["%s Data" % score_type]:
+      trait = trait_judge_data["Trait"]
+      if len(trait_judge_data["Judge Data"]["Comments"]) > 1:
+        for torque_judge_datum in trait_judge_data["Judge Data"]["Comments"]:
+          if (not torque_judge_datum.get('Comment') or 
+              not torque_judge_datum.get('Score', {}).get('Raw') or 
+              not torque_judge_datum.get('Anonymous Judge Name')):
+            continue
+
+          judge = torque_judge_datum["Anonymous Judge Name"]
+          score = torque_judge_datum["Score"]["Raw"]
+          comment = torque_judge_datum["Comment"]
+          eval = {
+            'ID': proposal["Application #"],
+            'Comment': comment,
+            'Criteria': column_mapping.get(trait, trait),
+            'Raw Score': float(score),
+            'Judge': judge
+          }
+          df.append(eval)
 
   return pd.DataFrame.from_records(df)
